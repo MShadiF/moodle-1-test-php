@@ -53,9 +53,9 @@ jobs:
         run: | 
           php -m | grep -E 'gd|intl|zip'
 
-      - name: Copy php.ini to PHP-CLI directory
-        run: |
-          sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
+      # - name: Copy php.ini to PHP-CLI directory
+      #   run: |
+      #     sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
 
       # - uses: "ramsey/composer-install@v3"
       #   with:
