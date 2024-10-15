@@ -57,6 +57,10 @@ jobs:
       #   with:
       #     working_dir: "server/moodle" 
 
+      - name: Check enabled PHP extensions
+        run: php -m
+
+
       
       - name: Install the curl certificate
         run: curl https://curl.se/ca/cacert.pem >cacert.pem
