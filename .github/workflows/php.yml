@@ -89,6 +89,7 @@ jobs:
             TEMP_MYSQL_PID=$!
             sleep 15 # Increased wait time to ensure MariaDB is ready
             
+            mysqld --verbose --help | grep "socket"
             # Set root password and authentication method
             echo "Setting root password..."
             mysql -uroot -S${mariadb_socket} <<EOF
