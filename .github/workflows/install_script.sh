@@ -17,6 +17,6 @@ cd "$REPO_ROOT"
 
 curl https://curl.se/ca/cacert.pem >"$REPO_ROOT"/cacert.pem
 ls -l
-sudo $(which nix-shell) --run "REPO_ROOT=$REPO_ROOT sh $PART_2_SCRIPT"
+nix-shell --run "REPO_ROOT=$REPO_ROOT sh $PART_2_SCRIPT"
 
 echo "Tests finished."

@@ -22,6 +22,8 @@ jobs:
           database: 'moodle'
           user: 'root'
           password: 'root'
+      - name: fix permissions
+        run: sudo chown -R $(whoami):$(whoami) .
 
       - name: Run bash script
         run: sh .github/workflows/install_script.sh
