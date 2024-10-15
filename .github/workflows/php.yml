@@ -222,7 +222,7 @@ jobs:
         run: |
           export LANG="en_AU.UTF-8"
           export LC_ALL="en_AU.UTF-8"
-          export PHPRC=`realpath server/php/php.ini`
+          export PHPRC=`realpath server/php/php.ini` --disable-phar
           
           REPO_ROOT="`pwd`"
           cd "$REPO_ROOT"/server/moodle
