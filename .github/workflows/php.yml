@@ -14,8 +14,8 @@ jobs:
       - name: install mariadb
         run: | 
           sudo apt install mariadb-server
-          systemctl disable mariadb
-          systemctl stop mariadb
+          sudo systemctl disable mariadb
+          sudo systemctl stop mariadb
         # uses: getong/mariadb-action@v1.11
       - name: Setup PHP
         id: setup-php
