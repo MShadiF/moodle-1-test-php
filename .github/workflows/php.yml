@@ -35,13 +35,30 @@ jobs:
           -e 's/;extension=sodium/extension=sodium/'
           -e 's/;extension=zip/extension=zip/'
           -e "s|curl\.cainfo.*|curl.cainfo=\"$REPO_ROOT/cacert.pem\"|"
-          -e "s|openssl\.cafile.*|openssl.cafile=\"$REPO_ROOT\"/server/apache/bin/curl-ca-bundle.crt|"
+          -e "s|openssl\.cafile.*|openssl.cafile=\"$REPO_ROOT/server/apache/bin/curl-ca-bundle.crt\"|"
           -e '$a\\max_input_vars=5000'
           -e '$a\\memory_limit_256M'
           -e '$a\\post_max_size=50M'
           -e '$a\\upload_max_filesize=50M'
           -e '$a\\extension=phar.so'
           server/php/php.ini
+
+      # - name: Set up php.ini
+      #   run: >
+      #     REPO_ROOT="`pwd`"
+      #     sed -i
+      #     -e 's/;extension=gd/extension=gd/'
+      #     -e 's/;extension=intl/extension=intl/'
+      #     -e 's/;extension=sodium/extension=sodium/'
+      #     -e 's/;extension=zip/extension=zip/'
+      #     -e "s|curl\.cainfo.*|curl.cainfo=\"$REPO_ROOT/cacert.pem\"|"
+      #     -e "s|openssl\.cafile.*|openssl.cafile=\"$REPO_ROOT\"/server/apache/bin/curl-ca-bundle.crt|"
+      #     -e '$a\\max_input_vars=5000'
+      #     -e '$a\\memory_limit_256M'
+      #     -e '$a\\post_max_size=50M'
+      #     -e '$a\\upload_max_filesize=50M'
+      #     -e '$a\\extension=phar.so'
+      #     server/php/php.ini
 
       # - name: Install composer
       #   run: |
