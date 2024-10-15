@@ -267,8 +267,8 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
 
-          locate config.php
-          echo "$(locate xorg.conf)"
+          find / -name config.php 2>/dev/null
+          
           echo "This is the path: $(realpath config.php)"
           if [ -d "$REPO_ROOT/server/moodle/config.php") ]; then
             echo "It is here"
