@@ -49,24 +49,22 @@ jobs:
       #     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
       #     php composer-setup.php
 
-
-      # - name: Install composer dependencies
-      #   run: |
-      #     composer install 
-      #     --working-dir=server/moodle 
-      #     --ignore-platform-req=ext-zip 
-      #     --ignore-platform-req=ext-gd 
-      #     --ignore-platform-req=ext-intl
-
       - name: Check enabled PHP extensions
         run: | 
-          php -m
-          php --ini
+          php -m | grep -E 'gd|intl|zip'
+
+      - name: Install composer dependencies
+        run: |
+          composer install \
+          --working-dir=server/moodle \
+          --ignore-platform-req=ext-zip \
+          --ignore-platform-req=ext-gd \
+          --ignore-platform-req=ext-intl \
       
-      - name: Install composer
-        uses: php-actions/composer@v6
-        with:
-          working_dir: "server/moodle"
+      # - name: Install composer
+      #   uses: php-actions/composer@v6
+      #   with:
+      #     working_dir: "server/moodle"
 
       - name: Check enabled PHP extensions
         run: | 
