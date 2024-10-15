@@ -61,7 +61,7 @@ jobs:
       - uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "locked"
-          working-directory: "/server/moodle"
+          working-directory: "server/moodle"
           
       - name: Install composer from CLI path
       - uses: "ramsey/composer-install@v3"
