@@ -29,10 +29,10 @@ jobs:
           -e 's/;extension=zip/extension=zip/'
           -e "s|curl\.cainfo.*|curl.cainfo=\"$REPO_ROOT/cacert.pem\"|"
           -e "s|openssl\.cafile.*|openssl.cafile=\"$REPO_ROOT\"/server/apache/bin/curl-ca-bundle.crt|"
-          -e "$a max_input_vars=5000"
-          -e "$a memory_limit_256M"
-          -e "$a post_max_size=50M"
-          -e "$a upload_max_filesize=50M"
+          -e "$a\max_input_vars=5000"
+          -e "$a\memory_limit_256M"
+          -e "$a\post_max_size=50M"
+          -e "$a\upload_max_filesize=50M"
           server/php/php.ini
       
       - name: Install the curl certificate
