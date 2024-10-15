@@ -231,6 +231,23 @@ jobs:
       #     REPO_ROOT="`pwd`"
       #     cd "$REPO_ROOT"/server/moodle
       #     composer require --dev phpunit/phpunit
+
+      - name: Check and set max_input_vars
+        run: |
+          # Check current max_input_vars
+          echo "Current max_input_vars: $(php -r "echo ini_get('max_input_vars');")"
+          # Update php.ini if necessary
+          PHP_INI_FILE="/etc/php/8.3/cli/php.ini"
+          if [ "$(php -r "echo ini_get('max_input_vars');")" -lt 5000 ]; then
+            echo "Updating max_input_vars in php.ini"
+            echo "max_input_vars = 5000" >> $PHP_INI_FILE
+          else
+            echo "max_input_vars is already set to a sufficient value."
+          fi
+          # Verify the change
+          echo "New max_input_vars: $(php -r "echo ini_get('max_input_vars');")"
+
+
       - name: Install and initialise phpunit
         run: |
           export LANG="en_AU.UTF-8"
