@@ -41,6 +41,7 @@ jobs:
 
       - name: Set up the database and start mariadb
         run: |
+          set -x
           mariadb_data_dir="./mariadb_data"
           mariadb_socket="/tmp/mysqld.sock"
           moodle_db_name="moodle"
