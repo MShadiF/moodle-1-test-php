@@ -45,6 +45,7 @@ jobs:
 
       - name: Install composer
         run: |
+          cd server/moodle
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
           php composer-setup.php
       
