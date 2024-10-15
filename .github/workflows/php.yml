@@ -53,18 +53,22 @@ jobs:
         run: | 
           php -m | grep -E 'gd|intl|zip'
 
-      - name: Install composer dependencies
+      # - name: Install composer dependencies
+      #   run: |
+      #     composer install \
+      #     --working-dir=server/moodle \
+      #     --ignore-platform-req=ext-zip \
+      #     --ignore-platform-req=ext-gd \
+      #     --ignore-platform-req=ext-intl \
+      - name: Copy php.ini to PHP-CLI directory
         run: |
-          composer install \
-          --working-dir=server/moodle \
-          --ignore-platform-req=ext-zip \
-          --ignore-platform-req=ext-gd \
-          --ignore-platform-req=ext-intl \
+          sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
+
       
-      # - name: Install composer
-      #   uses: php-actions/composer@v6
-      #   with:
-      #     working_dir: "server/moodle"
+      - name: Install composer
+        uses: php-actions/composer@v6
+        with:
+          working_dir: "server/moodle"
 
       - name: Check enabled PHP extensions
         run: | 
