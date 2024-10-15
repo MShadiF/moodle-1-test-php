@@ -56,7 +56,7 @@ jobs:
             local process=$1
             if pgrep -x "$process" > /dev/null; then
               echo "Killing existing $process process..."
-              pkill -x "$process"
+              sudo pkill -x "$process"
               sleep 2
             fi
           }
@@ -67,7 +67,7 @@ jobs:
             local pid=$(lsof -ti:$port)
             if [ ! -z "$pid" ]; then
               echo "Killing process using port $port..."
-              kill -9 $pid
+              sudo kill -9 $pid
               sleep 2
             fi
           }
@@ -84,7 +84,7 @@ jobs:
           if [ ! -d "${mariadb_data_dir}/mysql" ]; then
             mysql_install_db --datadir=${mariadb_data_dir}
             # Start MariaDB temporarily to set up the database
-            mysqld --datadir=${mariadb_data_dir} --socket=${mariadb_socket} --skip-grant-tables &
+            sudo mysqld --datadir=${mariadb_data_dir} --socket=${mariadb_socket} --skip-grant-tables &
             TEMP_MYSQL_PID=$!
             sleep 15 # Increased wait time to ensure MariaDB is ready
             
