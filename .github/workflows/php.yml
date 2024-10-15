@@ -257,9 +257,10 @@ jobs:
           find / -name config.php 2>/dev/null
           
           echo "This is the path: $(realpath config.php)"
-          if [ -d "$REPO_ROOT/server/moodle/config.php") ]; then
+          if [ -f "$REPO_ROOT/server/moodle/config.php") ]; then
             echo "It is here"
           fi
+          ls -l "$REPO_ROOT/server/moodle"
           echo "This is the path: $(realpath "$REPO_ROOT/server/moodle/config.php")"
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php"
