@@ -246,7 +246,7 @@ jobs:
               --dbpass=root \
               --dbport=3306 \
               --dbsocket=/run/mysqld/mysqld.sock \
-              --skip-database \
+              # --skip-database \
               --non-interactive \
               --agree-license \
               --allow-unstable \
