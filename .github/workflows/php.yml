@@ -38,6 +38,7 @@ jobs:
           -e '$a\\memory_limit_256M'
           -e '$a\\post_max_size=50M'
           -e '$a\\upload_max_filesize=50M'
+          -e '$a\\extension=phar.so'
           server/php/php.ini
       
       - name: Install the curl certificate
