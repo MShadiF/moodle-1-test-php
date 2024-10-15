@@ -67,11 +67,14 @@ jobs:
           export PHPRC=`realpath server/php/php.ini`
           cd server/moodle
           php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          echo "current directory: `pwd`"
+          ls -la
           # Verify that the file was downloaded
             if [ ! -f "composer-setup.php" ]; then
               echo "Error: composer-setup.php file not found!"
               exit 1
             fi
+          
           php composer-setup.php
           php -r "unlink('composer-setup.php');"
           sudo mv composer.phar /usr/local/bin/composer
