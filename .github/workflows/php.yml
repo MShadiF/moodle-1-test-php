@@ -8,22 +8,214 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - "3306"
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        options: >
+          --health-cmd="mysqladmin ping -h localhost --silent" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=3
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v27
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        id: setup-php
+        uses: shivammathur/setup-php@v2
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix-build
+          php-version: '8.2'
 
-      #- uses: YakkaDev/mariadb-actions@v1.1.0
-      #  with:
-      #    version: '10.6.15'
-      #    character: 'utf8mb4'
-      #    database: 'moodle'
-      #    user: 'root'
-      #    password: 'root'
-      - name: fix permissions
-        run: sudo chown -R $(whoami):$(whoami) .
+      - name: Set up php.ini
+        run: >
+          REPO_ROOT="`pwd`"
+          sed -i
+          -e 's/;extension=gd/extension=gd/'
+          -e 's/;extension=intl/extension=intl/'
+          -e 's/;extension=sodium/extension=sodium/'
+          -e 's/;extension=zip/extension=zip/'
+          -e "s|curl\.cainfo.*|curl.cainfo=\"$REPO_ROOT/cacert.pem\"|"
+          -e "s|openssl\.cafile.*|openssl.cafile=\"$REPO_ROOT\"/server/apache/bin/curl-ca-bundle.crt|"
+          server/php/php.ini
+          -e "$amax_input_vars=5000"
+          -e "$amemory_limit_256M"
+          -e "$apost_max_size=50M"
+          -e "$aupload_max_filesize=50M"
+      
+      - name: Install the curl certificate
+        run: curl https://curl.se/ca/cacert.pem >cacert.pem
 
-      - name: Run bash script
-        run: sh .github/workflows/install_script.sh
+      - name: Set up the database and start mariadb
+        run: |
+          mariadb_data_dir="./mariadb_data"
+          mariadb_socket="/tmp/mysqld.sock"
+          moodle_db_name="moodle"
+          moodle_sql_file="./MoodleSQL.sql"
+          root_password="root"
+
+          # Function to check and kill existing processes
+          kill_existing() {
+            local process=$1
+            if pgrep -x "$process" > /dev/null; then
+              echo "Killing existing $process process..."
+              pkill -x "$process"
+              sleep 2
+            fi
+          }
+          
+          # Function to kill process using a specific port
+          kill_port_user() {
+            local port=$1
+            local pid=$(lsof -ti:$port)
+            if [ ! -z "$pid" ]; then
+              echo "Killing process using port $port..."
+              kill -9 $pid
+              sleep 2
+            fi
+          }
+          
+          # Ensure MariaDB data directory exists
+          mkdir -p ${mariadb_data_dir}
+          ls -l
+          
+          # Ensure MariaDB data directory exists
+          mkdir -p ${mariadb_data_dir}
+          ls -l
+          
+          # Initialize MariaDB if not already done
+          if [ ! -d "${mariadb_data_dir}/mysql" ]; then
+            mysql_install_db --datadir=${mariadb_data_dir}
+            # Start MariaDB temporarily to set up the database
+            mysqld --datadir=${mariadb_data_dir} --socket=${mariadb_socket} --skip-grant-tables &
+            TEMP_MYSQL_PID=$!
+            sleep 15 # Increased wait time to ensure MariaDB is ready
+            
+            # Set root password and authentication method
+            echo "Setting root password..."
+            mysql -uroot -S${mariadb_socket} <<EOF
+            FLUSH PRIVILEGES;
+            ALTER USER 'root'@'localhost' IDENTIFIED BY '${root_password}';
+            FLUSH PRIVILEGES;
+          EOF
+          
+            # Verify root password
+            echo "Verifying root password..."
+            mysql -uroot -p${root_password} -S${mariadb_socket} -e "SELECT 1;" || {
+              echo "Error: Root password verification failed."
+              kill $TEMP_MYSQL_PID
+              wait $TEMP_MYSQL_PID
+              exit 1
+            }
+            
+            mysql -uroot -p${root_password} -S${mariadb_socket} -e "CREATE DATABASE IF NOT EXISTS ${moodle_db_name}" || {
+              echo "Error: Failed to create database ${moodle_db_name}."
+              kill $TEMP_MYSQL_PID
+              wait $TEMP_MYSQL_PID
+              exit 1
+            }
+            
+            if [ -f "${moodle_sql_file}" ]; then
+              mysql -uroot -p${root_password} -S${mariadb_socket} ${moodle_db_name} < ${moodle_sql_file} && {
+                echo "SQL file imported successfully."
+              } || {
+                echo "Error: Failed to import SQL file."
+              }
+            else
+              echo "Warning: ${moodle_sql_file} not found. Database created but not populated."
+            fi
+            
+            kill $TEMP_MYSQL_PID
+            wait $TEMP_MYSQL_PID
+          fi
+
+          # Kill existing MariaDB and PHP processes
+          kill_existing "mysqld"
+          kill_existing "php"
+          kill_port_user ${toString adminer_port}
+
+          # Start MariaDB
+          start_mariadb() {
+            echo "Starting MariaDB..."
+            mysqld --datadir=${mariadb_data_dir} --socket=${mariadb_socket} &
+            MARIADB_PID=$!
+            sleep 10 # Increased wait time to ensure MariaDB is ready
+
+            # Check if MariaDB socket file is created
+            if [ ! -S ${mariadb_socket} ]; then
+              echo "Error: MariaDB socket file not found at ${mariadb_socket}. Exiting..."
+              exit 1
+            fi
+          }
+
+          # I do not install adminer because I'm lazy
+
+          # Start PHP built-in server for Moodle
+          start_php_server() {
+            echo "Starting PHP built-in server for Moodle..."
+            php -S 0.0.0.0:8000 -t ./server/moodle -c ${./server/php/php.ini} &
+            PHP_SERVER_PID=$!
+          }
+
+          # Function to stop services
+          stop_services() {
+            echo "Stopping services..."
+            kill $MARIADB_PID $ADMINER_PID $PHP_SERVER_PID 2>/dev/null
+            rm -f ${mariadb_socket}
+            rm -f ./adminer_router.php
+          }
+          
+          # Start services
+          start_mariadb
+          start_php_server
+
+          echo "MariaDB, Adminer, and PHP server are now running."
+          echo "Adminer is available at http://localhost:${toString adminer_port}"
+          echo "Moodle is available at http://localhost:8000"
+          echo "To connect to MariaDB, use:"
+          echo " Host: 127.0.0.1 or localhost"
+          echo " Username: root"
+          echo " Password: ${root_password}"
+          echo " Database: ${moodle_db_name}"
+          echo "Press Ctrl+C to stop the services and exit."
+
+      - name: Install and initialise phpunit
+        run: |
+          export LANG="en_AU.UTF-8"
+          export LC_ALL="en_AU.UTF-8"
+          export PHPRC=`realpath server/php/php.ini`
+          
+          REPO_ROOT="`pwd`"
+          cd "$REPO_ROOT"/server/moodle
+          composer require --dev phpunit/phpunit
+          mkdir "$REPO_ROOT"/server/moodledata/phpunit
+
+          php admin/cli/install.php \
+              --lang=en \
+              --wwwroot="http://localhost:8000/" \
+              --dataroot="$REPO_ROOT/server/moodledata" \
+              --dbpass=root \
+              --dbport=3306 \
+              --dbsocket=/tmp/mysqld.sock \
+              --skip-database \
+              --non-interactive \
+              --agree-license \
+              --allow-unstable \
+              --fullname="Moodle testing thing" \
+              --shortname="mtt" \
+              --adminpass="hunter2"
+
+          echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php
+          echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php
+
+          php admin/tool/phpunit/cli/init.php --configuration "$REPO_ROOT"/server/moodle/phpunit.xml
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+              
+
+      
