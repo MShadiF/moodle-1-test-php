@@ -10,7 +10,8 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
         
       - name: install mariadb
         run: | 
@@ -43,11 +44,11 @@ jobs:
           -e '$a\\extension=phar.so'
           server/php/php.ini
 
-      - name: Install composer
-        run: |
-          cd server/moodle
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          php composer-setup.php
+      # - name: Install composer
+      #   run: |
+      #     cd server/moodle
+      #     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+      #     php composer-setup.php
       
       - name: Install the curl certificate
         run: curl https://curl.se/ca/cacert.pem >cacert.pem
