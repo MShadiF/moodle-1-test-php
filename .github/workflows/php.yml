@@ -61,15 +61,21 @@ jobs:
       #   with:
       #     working-directory: "/etc/php/8.2/cli/php.ini"
 
+      - name: install composer
+        run: |
+          cd server/moodle
+          sudo apt-get update
+          sudo apt-get install curl
+          sudo apt-get install php php-curl
+          curl -sS https://getcomposer.org/installer -o composer-setup.php
+          sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+          sudo composer self-update
+          composer -v
+
       - name: Check enabled PHP extensions
         run: | 
           php -m
           php --ini
-          composer
-
-      - uses: "ramsey/composer-install@v3"
-        with:
-          working-directory: "server/moodle"
       
       - name: Install the curl certificate
         run: curl https://curl.se/ca/cacert.pem >cacert.pem
