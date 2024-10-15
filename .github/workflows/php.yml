@@ -12,7 +12,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: install mariadb
-        uses: getong/mariadb-action@v1.11
+        run: sudo apt install mariadb-server
+        # uses: getong/mariadb-action@v1.11
       - name: Setup PHP
         id: setup-php
         uses: shivammathur/setup-php@v2
