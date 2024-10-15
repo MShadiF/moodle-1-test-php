@@ -134,7 +134,6 @@ jobs:
           # Kill existing MariaDB and PHP processes
           kill_existing "mysqld"
           kill_existing "php"
-          kill_port_user ${toString adminer_port}
 
           # Start MariaDB
           start_mariadb() {
@@ -162,17 +161,15 @@ jobs:
           # Function to stop services
           stop_services() {
             echo "Stopping services..."
-            kill $MARIADB_PID $ADMINER_PID $PHP_SERVER_PID 2>/dev/null
+            kill $MARIADB_PID  $PHP_SERVER_PID 2>/dev/null
             rm -f ${mariadb_socket}
-            rm -f ./adminer_router.php
           }
           
           # Start services
           start_mariadb
           start_php_server
 
-          echo "MariaDB, Adminer, and PHP server are now running."
-          echo "Adminer is available at http://localhost:${toString adminer_port}"
+          echo "MariaDB and PHP server are now running."
           echo "Moodle is available at http://localhost:8000"
           echo "To connect to MariaDB, use:"
           echo " Host: 127.0.0.1 or localhost"
