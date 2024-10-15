@@ -57,6 +57,12 @@ jobs:
       #     --ignore-platform-req=ext-zip 
       #     --ignore-platform-req=ext-gd 
       #     --ignore-platform-req=ext-intl
+
+      - name: Check enabled PHP extensions
+        run: | 
+          php -m
+          php --ini
+      
       - name: Install composer
         uses: php-actions/composer@v6
         with:
