@@ -235,7 +235,7 @@ jobs:
           mkdir "$REPO_ROOT"/server/moodledata/phpunit"
           fi
 
-          php admin/cli/install.php \
+           php admin/cli/install.php \
               --lang=en \
               --wwwroot="http://localhost:8000/" \
               --dataroot="$REPO_ROOT/server/moodledata" \
@@ -251,9 +251,28 @@ jobs:
               --adminpass="hunter2"
 
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php
-          echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php
+          echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';" >>"$REPO_ROOT"/server/moodle/config.php
 
           php admin/tool/phpunit/cli/init.php --configuration "$REPO_ROOT"/server/moodle/phpunit.xml
+          # php admin/cli/install.php \
+          #     --lang=en \
+          #     --wwwroot="http://localhost:8000/" \
+          #     --dataroot="$REPO_ROOT/server/moodledata" \
+          #     --dbpass=root \
+          #     --dbport=3306 \
+          #     --dbsocket=/run/mysqld/mysqld.sock \
+          #     --skip-database \
+          #     --non-interactive \
+          #     --agree-license \
+          #     --allow-unstable \
+          #     --fullname="Moodle testing thing" \
+          #     --shortname="mtt" \
+          #     --adminpass="hunter2"
+
+          # echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php
+          # echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php
+
+          # php admin/tool/phpunit/cli/init.php --configuration "$REPO_ROOT"/server/moodle/phpunit.xml
 
       - name: Run tests
         run: ./vendor/bin/phpunit
