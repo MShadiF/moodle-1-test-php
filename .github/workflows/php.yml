@@ -26,11 +26,11 @@ jobs:
           extensions: phar, iconv, mbstring, gd, intl, sodium, zip
           tools: composer
 
+      
       - name: Set up php.ini
         run: >
           REPO_ROOT="`pwd`"
           sed -i
-          -e 's/;extension=phar/extension=phar/'  # Ensure phar is enabled
           -e 's/;extension=gd/extension=gd/'
           -e 's/;extension=intl/extension=intl/'
           -e 's/;extension=sodium/extension=sodium/'
@@ -53,6 +53,7 @@ jobs:
       - name: Check enabled PHP extensions
         run: | 
           php -m | grep -E 'gd|intl|zip'
+          php -r "echo phpversion('phar');"
 
       # - name: Copy php.ini to PHP-CLI directory
       #   run: |
