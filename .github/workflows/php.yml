@@ -12,7 +12,7 @@ jobs:
       mariadb:
         image: mariadb:latest
         ports:
-          - "3306"
+          - "8080:3306"
         env:
           MYSQL_ROOT_PASSWORD: root
         options: >
