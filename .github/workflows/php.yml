@@ -49,6 +49,7 @@ jobs:
           mariadb_socket="/tmp/mysqld.sock"
           moodle_db_name="moodle"
           moodle_sql_file="./MoodleSQL.sql"
+          root_username="root"
           root_password="root"
 
           # Function to check and kill existing processes
