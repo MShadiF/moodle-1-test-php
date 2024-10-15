@@ -61,16 +61,15 @@ jobs:
       #   with:
       #     working-directory: "/etc/php/8.2/cli/php.ini"
 
-      - uses: "ramsey/composer-install@v3"
-        with:
-          working-directory: "/server/moodle"
-        
       - name: Check enabled PHP extensions
         run: | 
           php -m
           php --ini
+          composer
 
-
+      - uses: "ramsey/composer-install@v3"
+        with:
+          working-directory: "server/moodle"
       
       - name: Install the curl certificate
         run: curl https://curl.se/ca/cacert.pem >cacert.pem
