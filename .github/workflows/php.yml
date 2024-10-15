@@ -46,7 +46,7 @@ jobs:
         run: |
           set -x
           mariadb_data_dir="./mariadb_data"
-          mariadb_socket="/tmp/mysqld.sock"
+          mariadb_socket="/run/mysqld/mysqld.sock"
           moodle_db_name="moodle"
           moodle_sql_file="./MoodleSQL.sql"
           root_username="root"
@@ -195,7 +195,7 @@ jobs:
               --dataroot="$REPO_ROOT/server/moodledata" \
               --dbpass=root \
               --dbport=3306 \
-              --dbsocket=/tmp/mysqld.sock \
+              --dbsocket=/run/mysqld/mysqld.sock \
               --skip-database \
               --non-interactive \
               --agree-license \
