@@ -57,11 +57,11 @@ jobs:
         run: |
           sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
 
-      - name: Install composer
-      - uses: "ramsey/composer-install@v3"
-        with:
-          dependency-versions: "locked"
-          working-directory: "server/moodle"
+      # - name: Install composer
+      # - uses: "ramsey/composer-install@v3"
+      #   with:
+      #     dependency-versions: "locked"
+      #     working-directory: "server/moodle"
           
       # - name: Install composer from CLI path
       # - uses: "ramsey/composer-install@v3"
