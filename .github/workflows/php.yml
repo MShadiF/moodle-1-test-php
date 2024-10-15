@@ -12,7 +12,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: install mariadb
-        run: sudo apt install mariadb-server
+        run: | 
+          sudo apt install mariadb-server
+          systemctl disable mariadb
+          systemctl stop mariadb
         # uses: getong/mariadb-action@v1.11
       - name: Setup PHP
         id: setup-php
