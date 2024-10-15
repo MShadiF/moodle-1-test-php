@@ -254,24 +254,17 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
 
-          find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
-          ls /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
-
-          # Check for the existence of config.php
-          echo "This is the path: $(realpath /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php)"
           if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-            echo "It is here"
+            echo "File $("$REPO_ROOT/server/moodle/config.php") exist."
+          else
+            echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
           fi
-          echo "\$CFG->phpunit_prefix = 'phpu_';" >> "$REPO_ROOT/server/moodle/config.php"
-          echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';" >> "$REPO_ROOT/server/moodle/config.php"
+          
+          # echo "\$CFG->phpunit_prefix = 'phpu_';" >> "$REPO_ROOT/server/moodle/config.php"
+          # echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';" >> "$REPO_ROOT/server/moodle/config.php"
 
-          echo "This is the path: $(realpath config.php)"
-          # if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-          #   echo "It is here"
-          # fi
-          # echo "This is the path: $(realpath "$REPO_ROOT/server/moodle/config.php")"
-          # echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php"
-          # echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php"
+          echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php"
+          echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php"
 
           # echo "\$CFG->phpunit_prefix = 'phpu_';" >> "$REPO_ROOT/server/moodle/config.php"
           # echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';" >> "$REPO_ROOT/server/moodle/config.php"
