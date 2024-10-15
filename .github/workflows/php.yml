@@ -54,7 +54,7 @@ jobs:
         run: | 
           php -m | grep -E 'gd|intl|zip'
           php -r "echo phpversion('phar');"
-          cat php.ini
+          more php.ini
           realpath php.ini
 
       # - name: Copy php.ini to PHP-CLI directory
