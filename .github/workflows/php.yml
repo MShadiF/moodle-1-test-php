@@ -267,7 +267,7 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
 
-          more "$REPO_ROOT"/server/moodle/
+          realpath config.php
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php"
 
