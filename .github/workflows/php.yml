@@ -246,7 +246,7 @@ jobs:
               --dbpass=root \
               --dbport=3306 \
               --dbsocket=/run/mysqld/mysqld.sock \
-              # --skip-database \
+              --skip-database \
               --non-interactive \
               --agree-license \
               --allow-unstable \
@@ -254,13 +254,12 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
 
-          find / -name config.php 2>/dev/null
-          
+          find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
+          ls /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
           echo "This is the path: $(realpath config.php)"
           if [ -f "$REPO_ROOT/server/moodle/config.php") ]; then
             echo "It is here"
           fi
-          ls
           echo "This is the path: $(realpath "$REPO_ROOT/server/moodle/config.php")"
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT"/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT"/server/moodledata/phpunit)';">>"$REPO_ROOT"/server/moodle/config.php"
