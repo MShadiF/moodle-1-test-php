@@ -63,11 +63,11 @@ jobs:
           dependency-versions: "locked"
           working-directory: "server/moodle"
           
-      - name: Install composer from CLI path
-      - uses: "ramsey/composer-install@v3"
-        with:
-          dependency-versions: "locked"
-          working-directory: "/etc/php/8.2/cli/php.ini"
+      # - name: Install composer from CLI path
+      # - uses: "ramsey/composer-install@v3"
+      #   with:
+      #     dependency-versions: "locked"
+      #     working-directory: "/etc/php/8.2/cli/php.ini"
         
       - name: Check enabled PHP extensions
         run: | 
