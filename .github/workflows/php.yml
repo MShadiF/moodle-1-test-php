@@ -57,33 +57,17 @@ jobs:
         run: |
           sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
 
-
-      - name: Set PHPRC to use the modified php.ini
-        run: |
-          export PHPRC=`realpath server/php/php.ini`
-
-      - name: Install Composer
-        run: |
-          export PHPRC=`realpath server/php/php.ini`
-          cd server/moodle
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          echo "current directory: `pwd`"
-          ls -la
-          # Verify that the file was downloaded
-            if [ ! -f "composer-setup.php" ]; then
-              echo "Error: composer-setup.php file not found!"
-              exit 1
-            fi
+      - name: Install composer
+      - uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "locked"
+          working-directory: "/server/moodle"
           
-          php composer-setup.php
-          php -r "unlink('composer-setup.php');"
-          sudo mv composer.phar /usr/local/bin/composer
-
-      - name: Install dependencies with Composer
-        run: |
-          export PHPRC=`realpath server/php/php.ini`
-          cd server/moodle
-          composer install --no-interaction --prefer-dist --optimize-autoloader
+      - name: Install composer from CLI path
+      - uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "locked"
+          working-directory: "/etc/php/8.2/cli/php.ini"
         
       - name: Check enabled PHP extensions
         run: | 
