@@ -52,7 +52,8 @@ jobs:
 
       - name: Install composer dependencies
         run: |
-          composer install --working-dir=server/moodle 
+          composer install 
+          --working-dir=server/moodle 
           --ignore-platform-req=ext-zip 
           --ignore-platform-req=ext-gd 
           --ignore-platform-req=ext-intl
