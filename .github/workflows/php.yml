@@ -58,9 +58,9 @@ jobs:
           sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
 
       # Install dependencies using composer.json in src/Component/Config/
-      - uses: "ramsey/composer-install@v3"
-        with:
-          working-directory: "/etc/php/8.2/cli/php.ini"
+      # - uses: "ramsey/composer-install@v3"
+      #   with:
+      #     working-directory: "/etc/php/8.2/cli/php.ini"
 
       # Install dependencies using composer.json in src/Component/Validator/
       - uses: "ramsey/composer-install@v3"
