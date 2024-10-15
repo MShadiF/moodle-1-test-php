@@ -11,9 +11,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-progress
         
       - name: install mariadb
         run: | 
@@ -45,6 +42,11 @@ jobs:
           -e '$a\\upload_max_filesize=50M'
           -e '$a\\extension=phar.so'
           server/php/php.ini
+
+      - name: Install composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php
       
       - name: Install the curl certificate
         run: curl https://curl.se/ca/cacert.pem >cacert.pem
