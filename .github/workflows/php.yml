@@ -263,7 +263,7 @@ jobs:
           find server/moodle -type f -name phpunit.xml
           echo "This file exists"
           cd server/moodle
-          vendor/bin/phpunit ../moodledata/phpunit     
+          vendor/bin/phpunit server/moodle/phpunit.xml
           # cd server/moodle
           # vendor/bin/phpunit --configuration phpunit.xml              
 
