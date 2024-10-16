@@ -1,5 +1,7 @@
-<testsuites>
-  <testsuite name="test suite">
-    <directory>../moodledata/phpunit</directory>
-  </testsuite>
-</testsuites>
+<phpunit>
+  <testsuites>
+    <testsuite name="test suite">
+      <directory>../moodledata/phpunit</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
