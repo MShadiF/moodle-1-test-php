@@ -277,12 +277,6 @@ jobs:
           
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';">>"$REPO_ROOT/server/moodle/config.php"
-
-          if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-            php -r "include '$REPO_ROOT/server/moodle/config.php'; echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP_EOL;"
-          else
-            echo "Cannot find $("$REPO_ROOT/server/moodle/config.php") file"
-          fi
           
           php admin/tool/phpunit/cli/init.php
 
