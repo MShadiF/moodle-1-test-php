@@ -260,9 +260,9 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
           
-          php -r "define('CLI_SCRIPT', true);"
+          # php -r "define('CLI_SCRIPT', true);"
           find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
-          chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
+          sudo chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
           echo "This is the path: $(realpath config.php)"
           if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
             echo "File $("$REPO_ROOT/server/moodle/config.php") exist."
