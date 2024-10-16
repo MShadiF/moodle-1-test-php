@@ -226,7 +226,7 @@ jobs:
 
       - name: Install and initialise phpunit
         run: |
-          chmod 777 $REPO_ROOT/server/moodle/config.php
+          chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
           echo en_AU.UTF-8 UTF-8 | sudo tee -a /etc/locale.gen
           sudo locale-gen
           
