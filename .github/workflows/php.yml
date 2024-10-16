@@ -272,7 +272,10 @@ jobs:
           php admin/tool/phpunit/cli/init.php --configuration "$REPO_ROOT/server/moodle/phpunit.xml"
 
       - name: Run tests
-        run: ./vendor/bin/phpunit
+        run: |
+          pwd
+          ls -l
+          ./vendor/bin/phpunit
               
 
       
