@@ -283,6 +283,7 @@ jobs:
           cd server/moodle
           vendor/bin/phpunit --configuration phpunit.xml
           # "$REPO_ROOT/vendor/bin/phpunit"
+          #rgrg
               
 
       
