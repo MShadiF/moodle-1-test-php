@@ -223,6 +223,9 @@ jobs:
 
       - name: Install and initialise phpunit
         run: |
+          echo en_AU.UTF-8 UTF-8 | sudo tee -a /etc/locale.gen
+          sudo locale-gen
+          
           if [ "$(php -r "echo ini_get('max_input_vars');")" -lt 5000 ]; then
             echo "max_input_vars = 5000" >> /etc/php/8.3/cli/php.ini
           fi
