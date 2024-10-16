@@ -276,7 +276,8 @@ jobs:
           pwd
           ls -l
           find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/ -name phpunit
-          "$REPO_ROOT/vendor/bin/phpunit"
+          /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/vendor/bin/phpunit
+          # "$REPO_ROOT/vendor/bin/phpunit"
               
 
       
