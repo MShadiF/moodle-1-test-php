@@ -13,11 +13,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Set CLI_SCRIPT for Moodle CLI execution
-        run: |
-          echo "Defining CLI_SCRIPT in setup.php..."
-          sed -i 's/if (!CLI_SCRIPT) {/if (false) {/' server/moodle/lib/setup.php
         
       - name: install mariadb
         run: | 
@@ -283,19 +278,19 @@ jobs:
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';">>"$REPO_ROOT/server/moodle/config.php"
 
-          sed -i -e "/^\$CFG->phpunit_prefix =/ s|=.*|= 'phpu_';|" "$REPO_ROOT/server/moodle/config.php"
-          sed -i -e "/^\$CFG->phpunit_dataroot =/ s|=.*|= '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';|" "$REPO_ROOT/server/moodle/config.php"
+          # sed -i -e "/^\$CFG->phpunit_prefix =/ s|=.*|= 'phpu_';|" "$REPO_ROOT/server/moodle/config.php"
+          # sed -i -e "/^\$CFG->phpunit_dataroot =/ s|=.*|= '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';|" "$REPO_ROOT/server/moodle/config.php"
           
           php admin/tool/phpunit/cli/init.php
 
       - name: Run tests
         run: |
           pwd
+          find server/moodledata -type d -name phpunit
           echo "This file exists"
           cd server/moodle
-          php -r "define('CLI_SCRIPT', true);"
-          vendor/bin/phpunit --configuration phpunit.xml
-          # "$REPO_ROOT/vendor/bin/phpunit"
-              
+          vendor/bin/phpunit --configuration phpunit.xml        
+          # cd server/moodle
+          # vendor/bin/phpunit --configuration phpunit.xml              
 
       
