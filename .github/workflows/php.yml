@@ -3,6 +3,8 @@ name: PHP Composer
 on:
   pull_request:
     branches: [ "main", "staging" ]
+  push:
+    branches: [ "test-branch", "staging" ]
 
 jobs:
   build-test:
