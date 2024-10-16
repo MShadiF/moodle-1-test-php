@@ -260,7 +260,7 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
           
-          # php -r "define('CLI_SCRIPT', true);"
+          sudo php -r "define('CLI_SCRIPT', true);"
           find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
           sudo chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
           echo "This is the path: $(realpath config.php)"
