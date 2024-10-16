@@ -274,14 +274,14 @@ jobs:
       - name: Run tests
         run: |
           pwd
-          # if [ -f "$REPO_ROOT/server/moodle/phpunit.xml" ]; then
+          # if [ -f "server/moodle/phpunit.xml" ]; then
           #   echo "This file exists"
           # else
           #   make
-          # # ls -l $REPO_ROOT/server/moodle/phpunit.xml
+          # # ls -l server/moodle/phpunit.xml
           # find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/ -name phpunit.xml
           cd server/moodle
-          vendor/bin/phpunit --configuration $REPO_ROOT/server/moodledata/phpunit
+          vendor/bin/phpunit --configuration ../moodledata/phpunit
           # "$REPO_ROOT/vendor/bin/phpunit"
               
 
