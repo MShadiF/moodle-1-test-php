@@ -47,12 +47,6 @@ jobs:
           -e '$a\\extension=phar.so'
           server/php/php.ini
 
-      # - name: Install composer
-      #   run: |
-      #     cd server/moodle
-      #     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-      #     php composer-setup.php
-
       - name: Check enabled PHP extensions
         run: | 
           php -m | grep -E 'gd|intl|zip'
@@ -60,14 +54,6 @@ jobs:
           php -r "echo ini_get('max_input_vars');"
           more php.ini
           realpath php.ini
-
-      # - name: Copy php.ini to PHP-CLI directory
-      #   run: |
-      #     sudo cp server/php/php.ini /etc/php/8.2/cli/php.ini
-
-      # - uses: "ramsey/composer-install@v3"
-      #   with:
-      #     working-directory: "/etc/php/8.2/cli/php.ini"
 
       - name: install composer
         run: |
@@ -260,26 +246,14 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
           
-          sudo chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
-          echo "This is the path: $(realpath config.php)"
-          
           if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-            echo "File exist."
+            echo "Config.php file exist."
           else
-            echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
+            echo "Can not find config.php file"
           fi
-
-          # if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-          #   php -r "include '$REPO_ROOT/server/moodle/config.php'; echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP_EOL;"
-          # else
-          #   echo "Cannot find $("$REPO_ROOT/server/moodle/config.php") file"
-          # fi
           
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';">>"$REPO_ROOT/server/moodle/config.php"
-
-          # sed -i -e "/^\$CFG->phpunit_prefix =/ s|=.*|= 'phpu_';|" "$REPO_ROOT/server/moodle/config.php"
-          # sed -i -e "/^\$CFG->phpunit_dataroot =/ s|=.*|= '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';|" "$REPO_ROOT/server/moodle/config.php"
           
           php admin/tool/phpunit/cli/init.php
 
