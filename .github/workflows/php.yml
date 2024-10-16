@@ -288,8 +288,8 @@ jobs:
           pwd
           find server/moodledata -type d -name phpunit
           echo "This file exists"
-          cd server/moodle
-          vendor/bin/phpunit --configuration phpunit.xml        
+          # cd server/moodle
+          vendor/bin/phpunit /server/moodledata/phpunit     
           # cd server/moodle
           # vendor/bin/phpunit --configuration phpunit.xml              
 
