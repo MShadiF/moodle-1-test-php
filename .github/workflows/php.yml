@@ -273,6 +273,11 @@ jobs:
           
           php admin/tool/phpunit/cli/init.php
 
+          - name: Reinitialize PHPUnit Environment
+            run: |
+              cd server/moodle
+              php admin/tool/phpunit/cli/init.php
+
       - name: Run tests
         run: |
           pwd
