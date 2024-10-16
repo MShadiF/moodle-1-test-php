@@ -273,16 +273,16 @@ jobs:
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';">>"$REPO_ROOT/server/moodle/config.php"
           
           
-          if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-            php -r "
-            define('CLI_SCRIPT', true);
-            include '$REPO_ROOT/server/moodle/config.php';
-            echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP.EOL;
-            echo 'CFG->phpunit_dataroot: ' . \$CFG->phpunit_dataroot . PHP.EOL;
-            "
-          else
-            echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
-          fi
+          # if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
+          #   php -r "
+          #   define('CLI_SCRIPT', true);
+          #   include '$REPO_ROOT/server/moodle/config.php';
+          #   echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP.EOL;
+          #   echo 'CFG->phpunit_dataroot: ' . \$CFG->phpunit_dataroot . PHP.EOL;
+          #   "
+          # else
+          #   echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
+          # fi
           
           php admin/tool/phpunit/cli/init.php
 
