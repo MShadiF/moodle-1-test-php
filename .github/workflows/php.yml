@@ -281,12 +281,10 @@ jobs:
       - name: Run tests
         run: |
           pwd
-          echo "This file exists"
-          # # ls -l server/moodle/phpunit.xml
-          # find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/ -name phpunit.xml
           cd server/moodle
+          pwd
+          ls -l
           vendor/bin/phpunit --configuration phpunit.xml
-          # "$REPO_ROOT/vendor/bin/phpunit"
               
 
       
