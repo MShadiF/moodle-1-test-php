@@ -275,7 +275,7 @@ jobs:
         run: |
           pwd
           ls -l
-          cd $REPO_ROOT/vendor/bin/phpunit
+          "$REPO_ROOT/vendor/bin/phpunit"
               
 
       
