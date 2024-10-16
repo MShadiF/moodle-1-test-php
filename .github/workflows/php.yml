@@ -27,6 +27,7 @@ jobs:
         with:
           extensions: phar, iconv, mbstring, gd, intl, sodium, zip
           tools: composer
+          php-version: '8.2'
 
       
       - name: Set up php.ini
