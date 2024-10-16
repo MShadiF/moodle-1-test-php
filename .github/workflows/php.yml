@@ -226,7 +226,6 @@ jobs:
 
       - name: Install and initialise phpunit
         run: |
-          php -r "define('CLI_SCRIPT', true);"
           echo en_AU.UTF-8 UTF-8 | sudo tee -a /etc/locale.gen
           sudo locale-gen
           
@@ -260,7 +259,8 @@ jobs:
               --fullname="Moodle testing thing" \
               --shortname="mtt" \
               --adminpass="hunter2"
-
+          
+          php -r "define('CLI_SCRIPT', true);"
           find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
           chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
           echo "This is the path: $(realpath config.php)"
