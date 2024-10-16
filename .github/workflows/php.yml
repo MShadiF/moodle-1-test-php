@@ -226,6 +226,7 @@ jobs:
 
       - name: Install and initialise phpunit
         run: |
+          chmod 777 $REPO_ROOT/server/moodle/config.php
           echo en_AU.UTF-8 UTF-8 | sudo tee -a /etc/locale.gen
           sudo locale-gen
           
@@ -262,27 +263,26 @@ jobs:
 
           find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
           echo "This is the path: $(realpath config.php)"
-          chmod 777 $REPO_ROOT/server/moodle/config.php
           if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
             echo "File $("$REPO_ROOT/server/moodle/config.php") exist."
           else
             echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
           fi
+
+          if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
+            php -r "include '$REPO_ROOT/server/moodle/config.php'; echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP_EOL;"
+          else
+            echo "Cannot find $("$REPO_ROOT/server/moodle/config.php") file"
+          fi
           
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';">>"$REPO_ROOT/server/moodle/config.php"
-          
-          
-          # if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-          #   php -r "
-          #   define('CLI_SCRIPT', true);
-          #   include '$REPO_ROOT/server/moodle/config.php';
-          #   echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP.EOL;
-          #   echo 'CFG->phpunit_dataroot: ' . \$CFG->phpunit_dataroot . PHP.EOL;
-          #   "
-          # else
-          #   echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
-          # fi
+
+          if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
+            php -r "include '$REPO_ROOT/server/moodle/config.php'; echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP_EOL;"
+          else
+            echo "Cannot find $("$REPO_ROOT/server/moodle/config.php") file"
+          fi
           
           php admin/tool/phpunit/cli/init.php
 
