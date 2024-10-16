@@ -265,23 +265,26 @@ jobs:
               --shortname="mtt" \
               --adminpass="hunter2"
           
-          find /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/ -name config.php
           sudo chmod 777 /home/runner/work/moodle-1-test-php/moodle-1-test-php/server/moodle/config.php
           echo "This is the path: $(realpath config.php)"
+          
           if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-            echo "File $("$REPO_ROOT/server/moodle/config.php") exist."
+            echo "File exist."
           else
             echo "Can not find $("$REPO_ROOT/server/moodle/config.php") file"
           fi
 
-          if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
-            php -r "include '$REPO_ROOT/server/moodle/config.php'; echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP_EOL;"
-          else
-            echo "Cannot find $("$REPO_ROOT/server/moodle/config.php") file"
-          fi
+          # if [ -f "$REPO_ROOT/server/moodle/config.php" ]; then
+          #   php -r "include '$REPO_ROOT/server/moodle/config.php'; echo 'CFG->phpunit_prefix: ' . \$CFG->phpunit_prefix . PHP_EOL;"
+          # else
+          #   echo "Cannot find $("$REPO_ROOT/server/moodle/config.php") file"
+          # fi
           
           echo "\$CFG->phpunit_prefix = 'phpu_';" >>"$REPO_ROOT/server/moodle/config.php"
           echo "\$CFG->phpunit_dataroot = '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';">>"$REPO_ROOT/server/moodle/config.php"
+
+          sed -i -e "/^\$CFG->phpunit_prefix =/ s|=.*|= 'phpu_';|" "$REPO_ROOT/server/moodle/config.php"
+          sed -i -e "/^\$CFG->phpunit_dataroot =/ s|=.*|= '$(realpath "$REPO_ROOT/server/moodledata/phpunit")';|" "$REPO_ROOT/server/moodle/config.php"
           
           php admin/tool/phpunit/cli/init.php
 
