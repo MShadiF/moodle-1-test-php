@@ -215,13 +215,12 @@ jobs:
           echo en_AU.UTF-8 UTF-8 | sudo tee -a /etc/locale.gen
           sudo locale-gen
           
-          if [ "$(php -r "echo ini_get('max_input_vars');")" -lt 5000 ]; then
-            echo "max_input_vars = 5000" >> /etc/php/8.2/cli/php.ini
-          fi
+          #if [ "$(php -r "echo ini_get('max_input_vars');")" -lt 5000 ]; then
+          #  echo "max_input_vars = 5000" >> /etc/php/8.2/cli/php.ini
+          #fi
           export LANG="en_AU.UTF-8"
           export LC_ALL="en_AU.UTF-8"
-          export PHPRC=`realpath /etc/php/8.2/cli/php.ini`
-          # server/php/php.ini`
+          export PHPRC=`realpath server/php/php.ini`
           
           REPO_ROOT="`pwd`"
           cd "$REPO_ROOT"/server/moodle
