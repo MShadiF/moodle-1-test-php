@@ -51,13 +51,13 @@ jobs:
         run: | 
           set -x
           pwd
-          php -m | grep -E 'gd|intl|zip'
+          php -m #| grep -E 'gd|intl|zip'
           php -r "echo phpversion('phar');"
           php -r "echo ini_get('max_input_vars');"
           more php.ini
           realpath php.ini
           export PHPRC=`realpath server/php/php.ini`
-          php -m | grep -E 'gd|intl|zip'
+          php -m #| grep -E 'gd|intl|zip'
           php -r "echo phpversion('phar');"
           php -r "echo ini_get('max_input_vars');"
           more php.ini
